@@ -176,30 +176,35 @@ a:hover {
     align-items: center;
     justify-content: space-between;
     gap: var(--spacing-lg);
+    min-height: 70px;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    overflow-y: hidden;
 }
 
 .nav-logo {
     display: flex;
     align-items: center;
-    gap: var(--spacing-sm);
+    gap: var(--spacing-xs);
     font-size: var(--font-size-xl);
     font-weight: 700;
     color: var(--text-primary);
-}
-
-.logo-icon {
-    font-size: var(--font-size-2xl);
-}
-
-.logo-img {
-    height: 40px;
-    width: auto;
-    display: block;
+    white-space: nowrap;
+    flex-shrink: 0;
+    min-width: max-content;
+    line-height: 1;
 }
 
 .nav-search {
-    flex: 1;
-    max-width: 400px;
+    flex: 0 1 350px;
+    min-width: 200px;
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: var(--spacing-lg);
+    flex-shrink: 0;
 }
 
 .nav-search form {
@@ -240,10 +245,44 @@ a:hover {
     background-color: var(--primary-hover);
 }
 
-.nav-links {
-    display: flex;
-    align-items: center;
-    gap: var(--spacing-lg);
+.logo-icon {
+    font-size: var(--font-size-2xl);
+}
+
+.logo-img {
+    display: none;
+}
+
+.logo-text {
+    font-family: var(--font-family-serif);
+    font-weight: 800;
+    letter-spacing: 0.5px;
+    color: var(--text-primary);
+    display: inline;
+    line-height: 1;
+    vertical-align: middle;
+    font-size: var(--font-size-2xl);
+}
+
+.hero-brand {
+    height: auto;
+    width: min(600px, 80%);
+    max-height: 140px;
+    display: inline-block;
+    object-fit: contain;
+    background: transparent;
+    margin-bottom: var(--spacing-md);
+}
+
+/* Responsive adjustments */
+@media (max-width: 600px) {
+    .logo-img {
+        height: 40px;
+    }
+    .hero-brand {
+        width: 75%;
+        max-height: 110px;
+    }
 }
 
 .nav-link {
@@ -1803,24 +1842,39 @@ a:hover {
 }
 
 /* Responsive */
+@media (max-width: 900px) {
+    .nav-search {
+        flex: 0 1 280px;
+        min-width: 180px;
+    }
+}
+
 @media (max-width: 768px) {
     .nav-container {
-        flex-wrap: wrap;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
     }
     
     .nav-search {
-        order: 3;
-        width: 100%;
-        max-width: 100%;
-        margin-top: var(--spacing-md);
+        flex: 0 1 200px;
+        min-width: 180px;
     }
     
-    .nav-links {
+    .logo-img {
         display: none;
     }
     
+    .logo-text {
+        font-size: var(--font-size-base);
+    }
+    
+    .nav-links {
+        gap: var(--spacing-md);
+    }
+    
     .nav-toggle {
-        display: flex;
+        display: none;
     }
     
     .hero-actions {

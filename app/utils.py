@@ -60,3 +60,20 @@ def avatar_static_path(user):
         if os.path.isfile(full_path):
             return 'uploads/' + filename
     return 'images/default_avatar.png'
+
+def _static_path_exists(rel_path: str) -> bool:
+    """Check if a static-relative file exists on disk."""
+    try:
+        root = current_app.root_path
+        static_dir = os.path.join(root, 'static')
+        return os.path.isfile(os.path.join(static_dir, rel_path))
+    except Exception:
+        return False
+
+def brand_logo_path() -> str:
+    """Return universal brand logo path (SVG everywhere)."""
+    return 'images/logo.svg'
+
+def brand_title_image_path() -> str:
+    """Return universal brand title image path (SVG everywhere)."""
+    return 'images/logo.svg'

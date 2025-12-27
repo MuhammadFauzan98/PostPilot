@@ -13,15 +13,14 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/dark-mode.css') }}">
         <link rel="stylesheet" href="{{ url_for('static', filename='css/animations.css') }}">
     
-    <!-- Favicon -->
-    <link rel="icon" type="image/svg+xml" href="{{ url_for('static', filename='images/default-avatar.svg') }}">
+    <!-- Favicon / Brand -->
+    <!-- Favicon removed - app name only -->
 </head>
 <body>
     <!-- Navigation -->
     <nav class="navbar">
         <div class="nav-container">
             <a href="{{ url_for('main.index') }}" class="nav-logo">
-                <img src="{{ url_for('static', filename='images/logo.svg') }}" alt="PostPilot logo" class="logo-img" />
                 <span class="logo-text">PostPilot</span>
             </a>
             
@@ -129,9 +128,7 @@
     <footer class="footer">
         <div class="footer-container">
             <div class="footer-section">
-                <div class="footer-logo">
-                    <span class="logo-text">InkFlow</span>
-                </div>
+                <h3>PostPilot</h3>
                 <p class="footer-tagline">Where stories find their voice.</p>
             </div>
             
@@ -161,7 +158,7 @@
         </div>
         
         <div class="footer-bottom">
-            <p>&copy; 2024 PostPilot. All rights reserved.</p>
+            <p>&copy; 2025 PostPilot. All rights reserved.</p>
         </div>
     </footer>
 

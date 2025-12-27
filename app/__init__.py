@@ -87,8 +87,10 @@ def create_app(config_class=Config):
         print('[OAuth] Google provider NOT registered. Missing GOOGLE_CLIENT_ID/GOOGLE_CLIENT_SECRET.')
 
     # Expose helpers to Jinja globals
-    from app.utils import avatar_static_path
+    from app.utils import avatar_static_path, brand_logo_path, brand_title_image_path
     app.jinja_env.globals['avatar_url'] = avatar_static_path
+    app.jinja_env.globals['brand_logo_url'] = brand_logo_path
+    app.jinja_env.globals['brand_title_image_url'] = brand_title_image_path
     
     # Context processors
     @app.context_processor
@@ -97,13 +99,15 @@ def create_app(config_class=Config):
     
     @app.context_processor
     def utility_processor():
-        from app.utils import format_date, estimate_reading_time, excerpt, avatar_static_path
+        from app.utils import format_date, estimate_reading_time, excerpt, avatar_static_path, brand_logo_path, brand_title_image_path
         # avatar_url returns static-relative path with default fallback
         return dict(
             format_date=format_date,
             estimate_reading_time=estimate_reading_time,
             excerpt=excerpt,
-            avatar_url=avatar_static_path
+            avatar_url=avatar_static_path,
+            brand_logo_url=brand_logo_path,
+            brand_title_image_url=brand_title_image_path
         )
 
     # OAuth availability flag for templates

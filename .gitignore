@@ -1,0 +1,23 @@
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.pkl
+*.egg-info/
+
+# Environments
+.env
+.venv/
+venv/
+
+# VS Code
+.vscode/
+
+# Databases and uploads
+instance/
+app/static/uploads/
+
+# OS files
+.DS_Store
+Thumbs.db

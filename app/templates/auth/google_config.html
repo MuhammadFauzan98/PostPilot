@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+{% block title %}Configure Google Login{% endblock %}
+{% block content %}
+<div class="auth-container">
+  <div class="auth-card">
+    <div class="auth-header">
+      <h1>Configure Google Login</h1>
+      <p>Enter your OAuth Client ID and Secret to enable Google sign-in.</p>
+    </div>
+
+    <form method="POST" class="auth-form">
+      <div class="form-group">
+        <label for="client_id">Client ID</label>
+        <input type="text" id="client_id" name="client_id" required class="form-input">
+      </div>
+      <div class="form-group">
+        <label for="client_secret">Client Secret</label>
+        <input type="text" id="client_secret" name="client_secret" required class="form-input">
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Save & Enable</button>
+    </form>
+
+    <div class="auth-divider"><span>Notes</span></div>
+    <ul style="font-size:0.9rem; line-height:1.6;">
+      <li>Authorized redirect URI must be: <code>{{ url_for('auth.google_callback', _external=True) }}</code></li>
+      <li>For local dev, http is allowed when debug is on.</li>
+      <li>You can also set <code>GOOGLE_CLIENT_ID</code> and <code>GOOGLE_CLIENT_SECRET</code> in your <code>.env</code>.</li>
+    </ul>
+  </div>
+</div>
+{% endblock %}

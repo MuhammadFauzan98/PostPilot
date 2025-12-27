@@ -66,9 +66,6 @@
                     </div>
                 {% else %}
                     <a href="{{ url_for('auth.login') }}" class="nav-link">Sign In</a>
-                    {% if google_oauth_enabled %}
-                        <span class="oauth-indicator" title="Google login available"></span>
-                    {% endif %}
                     <a href="{{ url_for('auth.register') }}" class="btn btn-primary">Get Started</a>
                 {% endif %}
                 

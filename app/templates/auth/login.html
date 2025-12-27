@@ -39,20 +39,6 @@
         <div class="auth-divider">
             <span>or</span>
         </div>
-
-        <div class="oauth-actions" style="text-align:center;">
-            <a href="{{ url_for('auth.google_login') }}" class="btn btn-outline btn-block" style="display:inline-flex; align-items:center; gap:8px; justify-content:center;">
-                <img src="https://www.gstatic.com/images/branding/product/1x/googleg_32dp.png" alt="Google" style="width:20px; height:20px;"> Continue with Google
-            </a>
-            {% if not google_oauth_enabled %}
-            <div class="alert info" style="margin-top:12px; font-size:0.9rem;">
-                Google login is not configured.
-                <a href="{{ url_for('auth.google_debug') }}" style="text-decoration: underline;">Check status</a>
-                •
-                <a href="{{ url_for('auth.google_config') }}" style="text-decoration: underline;">Configure now</a>
-            </div>
-            {% endif %}
-        </div>
         
         <div class="auth-footer">
             <p>New to PostPilot? <a href="{{ url_for('auth.register') }}">Create an account</a></p>

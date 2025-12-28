@@ -13,6 +13,12 @@ class Config:
     PERMANENT_SESSION_LIFETIME = timedelta(days=7)
     SERVER_NAME = os.environ.get('SERVER_NAME') or None  # e.g., 'localhost:5000'
     
+    # Session configuration for OAuth state persistence
+    SESSION_PERMANENT = True
+    SESSION_COOKIE_SECURE = False  # Set to True in production with HTTPS
+    SESSION_COOKIE_HTTPONLY = True
+    SESSION_COOKIE_SAMESITE = 'Lax'  # Allows cross-site POST for OAuth redirect
+    
     # Pagination
     BLOGS_PER_PAGE = 10
     COMMENTS_PER_PAGE = 20

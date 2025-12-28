@@ -1,4 +1,4 @@
-from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app
+from flask import Blueprint, render_template, redirect, url_for, flash, request, current_app, session
 from flask_login import login_user, logout_user, current_user, login_required
 from app import db, oauth
 from app.models import User
@@ -20,14 +20,14 @@ def _resolve_google_redirect():
     server_name = current_app.config.get('SERVER_NAME')
     scheme = request.headers.get('X-Forwarded-Proto', request.scheme or 'http')
     if server_name:
-        return f"{scheme}://{server_name}/auth/google/callback"
+        return f"{scheme}://{server_name}/auth/google-callback"
 
     # Then: actual host from the current request (matches how the user accessed the app)
     if request.host:
-        return f"{scheme}://{request.host}/auth/google/callback"
+        return f"{scheme}://{request.host}/auth/google-callback"
 
     # Fallback: default to localhost:5000 to match common Google console config
-    return f"{scheme}://localhost:5000/auth/google/callback"
+    return f"{scheme}://localhost:5000/auth/google-callback"
 
 @bp.route('/register', methods=['GET', 'POST'])
 def register():
@@ -95,7 +95,7 @@ def login():
     
     return render_template('auth/login.html')
 
-@bp.route('/google/login')
+@bp.route('/google-login')
 def google_login():
     if current_user.is_authenticated:
         return redirect(url_for('main.index'))
@@ -104,21 +104,45 @@ def google_login():
         flash('Google login is not configured. Please set GOOGLE_CLIENT_ID and GOOGLE_CLIENT_SECRET.', 'danger')
         return redirect(url_for('auth.login'))
 
+    # Mark session as permanent and ensure it's initialized before OAuth redirect
+    session.permanent = True
+    current_app.permanent_session_lifetime = current_app.config['PERMANENT_SESSION_LIFETIME']
+    # Force session to be created and ensure it's saved
+    session['_oauth_init'] = True
+    
+    # Use the host from the current request to avoid host mismatches
     redirect_uri = _resolve_google_redirect()
+    print(f"[OAuth] Initiating login from host: {request.host}, redirect_uri: {redirect_uri}")
+    
     return oauth.google.authorize_redirect(redirect_uri)
 
-@bp.route('/google/callback')
+@bp.route('/google-callback')
 def google_callback():
     if not oauth._registry.get('google'):
         flash('Google login is not configured.', 'danger')
         return redirect(url_for('auth.login'))
 
     try:
+        # Get the authorization code from the callback
+        code = request.args.get('code')
+        state = request.args.get('state')
+        
+        print(f"[OAuth] Callback received - Code: {code[:20] if code else 'None'}..., State: {state[:20] if state else 'None'}...")
+        print(f"[OAuth] Session ID: {request.cookies.get('session', 'NO_SESSION')[:20]}...")
+        
         token = oauth.google.authorize_access_token()
+        print(f"[OAuth] Token obtained successfully")
     except Exception as e:
         # Log the specific error to server console to diagnose state/redirect issues
-        print(f"[OAuth] authorize_access_token failed: {e}")
-        flash('Google authorization failed. Please try again using the same host (localhost or 127.0.0.1) you started from.', 'danger')
+        error_str = str(e)
+        print(f"[OAuth] authorize_access_token failed: {error_str}")
+        
+        # Check for specific state mismatch error
+        if 'state' in error_str.lower() or 'csrf' in error_str.lower():
+            print(f"[OAuth] State mismatch detected - this is a session persistence issue")
+            flash('Session expired. Please try logging in again.', 'warning')
+        else:
+            flash('Google authorization failed. Please try again.', 'danger')
         return redirect(url_for('auth.login'))
 
     # Fetch user info (OIDC)

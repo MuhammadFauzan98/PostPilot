@@ -369,9 +369,7 @@ a:hover {
 }
 
 .dropdown-menu {
-    position: absolute;
-    top: 100%;
-    right: 0;
+    position: fixed;
     background-color: var(--background-color);
     border: 1px solid var(--border-color);
     border-radius: var(--border-radius-md);
@@ -382,12 +380,19 @@ a:hover {
     visibility: hidden;
     transform: translateY(-10px);
     transition: all var(--transition-fast);
+    z-index: 2000;
 }
 
 .nav-dropdown:hover .dropdown-menu {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+}
+
+.dropdown-menu.active {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) !important;
 }
 
 .dropdown-item {

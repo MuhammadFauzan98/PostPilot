@@ -36,6 +36,15 @@ def create_app(config_class=Config):
 
     db.init_app(app)
     login_manager.init_app(app)
+    
+    # Configure session persistence BEFORE OAuth
+    app.config.update(
+        SESSION_PERMANENT=True,
+        SESSION_COOKIE_SECURE=app.config.get('SESSION_COOKIE_SECURE', False),
+        SESSION_COOKIE_HTTPONLY=app.config.get('SESSION_COOKIE_HTTPONLY', True),
+        SESSION_COOKIE_SAMESITE=app.config.get('SESSION_COOKIE_SAMESITE', 'Lax')
+    )
+    
     oauth.init_app(app)
     
     from app.models import User, Blog, Comment, Like, Bookmark
@@ -43,6 +52,10 @@ def create_app(config_class=Config):
     @app.before_request
     def before_request():
         g.user = current_user
+        # Ensure session is permanent for OAuth state persistence
+        from flask import session
+        session.permanent = True
+        app.permanent_session_lifetime = app.config['PERMANENT_SESSION_LIFETIME']
     
     # Register blueprints
     from app.auth import bp as auth_bp

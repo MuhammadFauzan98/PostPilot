@@ -56,9 +56,6 @@
                                 </a>
                             {% endif %}
                             <div class="dropdown-divider"></div>
-                            <button onclick="toggleDarkMode()" class="dropdown-item">
-                                Toggle Dark Mode
-                            </button>
                             <a href="{{ url_for('auth.logout') }}" class="dropdown-item logout">
                                 Logout
                             </a>
@@ -96,7 +93,6 @@
                 {% if current_user.is_admin() %}
                     <a href="{{ url_for('admin.panel') }}" class="mobile-link">Admin Panel</a>
                 {% endif %}
-                <button onclick="toggleDarkMode()" class="mobile-link">Toggle Dark Mode</button>
                 <a href="{{ url_for('auth.logout') }}" class="mobile-link logout">Logout</a>
             {% else %}
                 <a href="{{ url_for('auth.login') }}" class="mobile-link">Sign In</a>

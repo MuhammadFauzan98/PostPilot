@@ -64,6 +64,7 @@ body {
     background-color: var(--background-color);
     line-height: 1.6;
     transition: background-color var(--transition-base), color var(--transition-base);
+    overflow-x: hidden;
 }
 
 /* Typography */
@@ -177,9 +178,7 @@ a:hover {
     justify-content: space-between;
     gap: var(--spacing-lg);
     min-height: 70px;
-    flex-wrap: nowrap;
-    overflow-x: auto;
-    overflow-y: hidden;
+    flex-wrap: wrap;
 }
 
 .nav-logo {

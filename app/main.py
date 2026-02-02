@@ -111,6 +111,37 @@ def dashboard():
                          total_views=total_views,
                          bookmarks=bookmarks)
 
+
+@bp.route('/duplicate/<int:blog_id>', methods=['POST'])
+@login_required
+def duplicate(blog_id):
+    # Allow authors to quickly duplicate a blog as a draft
+    blog = Blog.query.filter_by(id=blog_id, author_id=current_user.id).first_or_404()
+
+    # Generate a unique slug for the copied blog
+    slug = slugify(blog.title)
+    counter = 1
+    original_slug = slug
+    while Blog.query.filter_by(slug=slug).first():
+        slug = f"{original_slug}-{counter}"
+        counter += 1
+
+    new_blog = Blog(
+        title=f"{blog.title} (Copy)",
+        slug=slug,
+        content=blog.content,
+        tags=blog.tags,
+        author_id=current_user.id,
+        status='draft',
+        excerpt=blog.excerpt
+    )
+
+    db.session.add(new_blog)
+    db.session.commit()
+
+    flash('Draft copied. You can edit the copy now.', 'success')
+    return redirect(url_for('main.editor', blog_id=new_blog.id))
+
 @bp.route('/editor', methods=['GET', 'POST'])
 @bp.route('/editor/<int:blog_id>', methods=['GET', 'POST'])
 @login_required

@@ -89,6 +89,11 @@
                         View
                     </a>
                     {% endif %}
+                    
+                    <!-- Duplicate (creates a draft copy) -->
+                    <form action="{{ url_for('main.duplicate', blog_id=blog.id) }}" method="post" style="display:inline;margin-left:8px;">
+                        <button type="submit" class="action-icon" title="Duplicate">Duplicate</button>
+                    </form>
                 </div>
             </div>
             {% endfor %}
